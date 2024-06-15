@@ -13,6 +13,13 @@ static lv_color_t buf[ screenWidth * screenHeight / 10 ];
 
 TFT_eSPI tft = TFT_eSPI(screenWidth, screenHeight); /* TFT instance */
 
+
+#define SENSOR_CDS_PIN 34
+#define LED_RED_PIN    4
+#define LED_GREEN_PIN  16
+#define LED_BLUE_PIN   17
+
+
 #if LV_USE_LOG != 0
 /* Serial debugging */
 void my_print(const char * buf)
@@ -104,11 +111,56 @@ void setup()
 
     ui_init();
 
+    pinMode(LED_RED_PIN, OUTPUT);
+    pinMode(LED_GREEN_PIN, OUTPUT);
+    pinMode(LED_BLUE_PIN, OUTPUT);
+    digitalWrite(LED_RED_PIN,HIGH);
+    digitalWrite(LED_GREEN_PIN,HIGH);
+    digitalWrite(LED_BLUE_PIN,HIGH);
     Serial.println( "Setup done" );
 }
 
+
+
+
+int sensorValue;
+unsigned long timer1 = millis();
+
 void loop()
 {
+    if(millis() > timer1+100)
+    {
+      timer1 = millis();
+      sensorValue = analogRead(SENSOR_CDS_PIN);
+      if(sensorValue >150)
+      {
+        digitalWrite(LED_RED_PIN,LOW);
+        digitalWrite(LED_GREEN_PIN,HIGH);
+        digitalWrite(LED_BLUE_PIN,HIGH);
+      }
+      else if(sensorValue >100)
+      {
+        digitalWrite(LED_RED_PIN,HIGH);
+        digitalWrite(LED_GREEN_PIN,LOW);
+        digitalWrite(LED_BLUE_PIN,HIGH);
+      }
+      else if(sensorValue >50)
+      {
+        digitalWrite(LED_RED_PIN,HIGH);
+        digitalWrite(LED_GREEN_PIN,HIGH);
+        digitalWrite(LED_BLUE_PIN,LOW);
+      }
+      else
+      {
+        digitalWrite(LED_RED_PIN,HIGH);
+        digitalWrite(LED_GREEN_PIN,HIGH);
+        digitalWrite(LED_BLUE_PIN,HIGH);
+      }
+      
+      lv_label_set_text_fmt(ui_Label1,"CDS : %d",sensorValue);
+    }
+  
+
     lv_timer_handler(); /* let the GUI do its work */
     delay(5);
 }
