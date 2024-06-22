@@ -16,4 +16,15 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_align(ui_Label1, LV_ALIGN_CENTER);
     lv_label_set_text(ui_Label1, "wowon");
 
+    ui_Button1 = lv_btn_create(ui_Screen1);
+    lv_obj_set_width(ui_Button1, 100);
+    lv_obj_set_height(ui_Button1, 31);
+    lv_obj_set_x(ui_Button1, 1);
+    lv_obj_set_y(ui_Button1, 69);
+    lv_obj_set_align(ui_Button1, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_Button1, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_clear_flag(ui_Button1, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    lv_obj_add_event_cb(ui_Button1, ui_event_Button1, LV_EVENT_ALL, NULL);
+
 }

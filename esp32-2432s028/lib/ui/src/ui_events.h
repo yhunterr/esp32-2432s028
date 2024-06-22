@@ -10,6 +10,8 @@
 extern "C" {
 #endif
 
+void btn1_func(lv_event_t * e);
+
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif

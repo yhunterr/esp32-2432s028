@@ -1,6 +1,7 @@
 #include <lvgl.h>
 #include <TFT_eSPI.h>
 #include <ui.h>
+#include <TFT_Touch.h>
 
 /*Don't forget to set Sketchbook location in File/Preferencesto the path of your UI project (the parent foder of this INO file)*/
 
@@ -12,6 +13,13 @@ static lv_disp_draw_buf_t draw_buf;
 static lv_color_t buf[ screenWidth * screenHeight / 10 ];
 
 TFT_eSPI tft = TFT_eSPI(screenWidth, screenHeight); /* TFT instance */
+
+
+#define DOUT 39  /* Data out pin (T_DO) of touch screen */
+#define DIN  32  /* Data in pin (T_DIN) of touch screen */
+#define DCS  33  /* Chip select pin (T_CS) of touch screen */
+#define DCLK 25  /* Clock pin (T_CLK) of touch screen */
+TFT_Touch touch = TFT_Touch(DCS, DCLK, DIN, DOUT);
 
 
 #define SENSOR_CDS_PIN 34
@@ -48,7 +56,7 @@ void my_touchpad_read( lv_indev_drv_t * indev_driver, lv_indev_data_t * data )
 {
     uint16_t touchX = 0, touchY = 0;
 
-    bool touched = false;//tft.getTouch( &touchX, &touchY, 600 );
+    bool touched = touch.Pressed();
 
     if( !touched )
     {
@@ -56,6 +64,8 @@ void my_touchpad_read( lv_indev_drv_t * indev_driver, lv_indev_data_t * data )
     }
     else
     {
+        touchX = touch.X();
+        touchY = touch.Y();
         data->state = LV_INDEV_STATE_PR;
 
         /*Set the coordinates*/
@@ -88,6 +98,9 @@ void setup()
 
     tft.begin();          /* TFT init */
     tft.setRotation( 3 ); /* Landscape orientation, flipped */
+    tft.invertDisplay(true);
+    touch.setCal(526, 3443, 750, 3377, 320, 240, 3);
+    touch.setRotation(3);
 
     lv_disp_draw_buf_init( &draw_buf, buf, NULL, screenWidth * screenHeight / 10 );
 
@@ -120,44 +133,27 @@ void setup()
     Serial.println( "Setup done" );
 }
 
-
-
-
-int sensorValue;
+int val=0;
 unsigned long timer1 = millis();
+
+
+void ui_event_Button1(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        val++;
+        lv_label_set_text_fmt(ui_Label1,"val : %d",val);
+    }
+}
+
+
 
 void loop()
 {
     if(millis() > timer1+100)
     {
       timer1 = millis();
-      sensorValue = analogRead(SENSOR_CDS_PIN);
-      if(sensorValue >150)
-      {
-        digitalWrite(LED_RED_PIN,LOW);
-        digitalWrite(LED_GREEN_PIN,HIGH);
-        digitalWrite(LED_BLUE_PIN,HIGH);
-      }
-      else if(sensorValue >100)
-      {
-        digitalWrite(LED_RED_PIN,HIGH);
-        digitalWrite(LED_GREEN_PIN,LOW);
-        digitalWrite(LED_BLUE_PIN,HIGH);
-      }
-      else if(sensorValue >50)
-      {
-        digitalWrite(LED_RED_PIN,HIGH);
-        digitalWrite(LED_GREEN_PIN,HIGH);
-        digitalWrite(LED_BLUE_PIN,LOW);
-      }
-      else
-      {
-        digitalWrite(LED_RED_PIN,HIGH);
-        digitalWrite(LED_GREEN_PIN,HIGH);
-        digitalWrite(LED_BLUE_PIN,HIGH);
-      }
-      
-      lv_label_set_text_fmt(ui_Label1,"CDS : %d",sensorValue);
     }
   
 
