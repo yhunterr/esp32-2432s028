@@ -30,6 +30,14 @@ extern lv_obj_t * ui_Screen1;
 extern lv_obj_t * ui_Label1;
 void ui_event_Button1(lv_event_t * e);
 extern lv_obj_t * ui_Button1;
+void ui_event_Button2(lv_event_t * e);
+extern lv_obj_t * ui_Button2;
+void ui_event_Button3(lv_event_t * e);
+extern lv_obj_t * ui_Button3;
+extern lv_obj_t * ui_Label2;
+extern lv_obj_t * ui_Label4;
+extern lv_obj_t * ui_Label5;
+extern lv_obj_t * ui_Label6;
 extern lv_obj_t * ui____initial_actions0;
 
 

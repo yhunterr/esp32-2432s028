@@ -13,18 +13,73 @@ void ui_Screen1_screen_init(void)
     ui_Label1 = lv_label_create(ui_Screen1);
     lv_obj_set_width(ui_Label1, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_Label1, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_Label1, -106);
+    lv_obj_set_y(ui_Label1, -93);
     lv_obj_set_align(ui_Label1, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Label1, "wowon");
+    lv_label_set_text(ui_Label1, "Stop watch");
 
     ui_Button1 = lv_btn_create(ui_Screen1);
-    lv_obj_set_width(ui_Button1, 100);
+    lv_obj_set_width(ui_Button1, 77);
     lv_obj_set_height(ui_Button1, 31);
-    lv_obj_set_x(ui_Button1, 1);
-    lv_obj_set_y(ui_Button1, 69);
+    lv_obj_set_x(ui_Button1, -101);
+    lv_obj_set_y(ui_Button1, 55);
     lv_obj_set_align(ui_Button1, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_Button1, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_clear_flag(ui_Button1, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_scrollbar_mode(ui_Button1, LV_SCROLLBAR_MODE_OFF);
+
+    ui_Button2 = lv_btn_create(ui_Screen1);
+    lv_obj_set_width(ui_Button2, 77);
+    lv_obj_set_height(ui_Button2, 31);
+    lv_obj_set_x(ui_Button2, -12);
+    lv_obj_set_y(ui_Button2, 55);
+    lv_obj_set_align(ui_Button2, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_Button2, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_clear_flag(ui_Button2, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_Button3 = lv_btn_create(ui_Screen1);
+    lv_obj_set_width(ui_Button3, 77);
+    lv_obj_set_height(ui_Button3, 31);
+    lv_obj_set_x(ui_Button3, 76);
+    lv_obj_set_y(ui_Button3, 55);
+    lv_obj_set_align(ui_Button3, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_Button3, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_clear_flag(ui_Button3, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_Label2 = lv_label_create(ui_Screen1);
+    lv_obj_set_width(ui_Label2, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Label2, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_Label2, -100);
+    lv_obj_set_y(ui_Label2, 55);
+    lv_obj_set_align(ui_Label2, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_Label2, "START");
+
+    ui_Label4 = lv_label_create(ui_Screen1);
+    lv_obj_set_width(ui_Label4, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Label4, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_Label4, -12);
+    lv_obj_set_y(ui_Label4, 56);
+    lv_obj_set_align(ui_Label4, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_Label4, "STOP");
+
+    ui_Label5 = lv_label_create(ui_Screen1);
+    lv_obj_set_width(ui_Label5, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Label5, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_Label5, 74);
+    lv_obj_set_y(ui_Label5, 55);
+    lv_obj_set_align(ui_Label5, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_Label5, "RESET");
+
+    ui_Label6 = lv_label_create(ui_Screen1);
+    lv_obj_set_width(ui_Label6, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Label6, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_Label6, -9);
+    lv_obj_set_y(ui_Label6, -21);
+    lv_obj_set_align(ui_Label6, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_Label6, "00:00:00");
 
     lv_obj_add_event_cb(ui_Button1, ui_event_Button1, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Button2, ui_event_Button2, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Button3, ui_event_Button3, LV_EVENT_ALL, NULL);
 
 }

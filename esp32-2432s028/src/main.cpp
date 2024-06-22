@@ -72,11 +72,11 @@ void my_touchpad_read( lv_indev_drv_t * indev_driver, lv_indev_data_t * data )
         data->point.x = touchX;
         data->point.y = touchY;
 
-        Serial.print( "Data x " );
-        Serial.println( touchX );
+        //Serial.print( "Data x " );
+        //Serial.println( touchX );
 
-        Serial.print( "Data y " );
-        Serial.println( touchY );
+        //Serial.print( "Data y " );
+        //Serial.println( touchY );
     }
 }
 
@@ -123,7 +123,6 @@ void setup()
 
 
     ui_init();
-
     pinMode(LED_RED_PIN, OUTPUT);
     pinMode(LED_GREEN_PIN, OUTPUT);
     pinMode(LED_BLUE_PIN, OUTPUT);
@@ -131,32 +130,78 @@ void setup()
     digitalWrite(LED_GREEN_PIN,HIGH);
     digitalWrite(LED_BLUE_PIN,HIGH);
     Serial.println( "Setup done" );
+ 
 }
 
 int val=0;
+
 unsigned long timer1 = millis();
-
-
-void ui_event_Button1(lv_event_t * e)
+unsigned long stopWatch_time;
+char start_status = -1;
+char reset_status = -1;
+///////////////////// FUNCTIONS ////////////////////
+void ui_event_Button1(lv_event_t * e) //START
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        val++;
-        lv_label_set_text_fmt(ui_Label1,"val : %d",val);
+        start_status = 1;
+    }
+
+}
+void ui_event_Button2(lv_event_t * e) //STOP
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        start_status = 0;
+    }
+}
+void ui_event_Button3(lv_event_t * e) //RESET
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        start_status = 0;
+        reset_status = 1;
     }
 }
 
-
+char* time_format(long l) {
+    int hours = l / 3600;
+    int minutes = (l % 3600) / 60;
+    int seconds = l % 60;
+    static char formatted_time[9];
+    sprintf(formatted_time, "%02d:%02d:%02d", hours, minutes, seconds);
+    return formatted_time;
+}
 
 void loop()
 {
-    if(millis() > timer1+100)
+    if(millis() > timer1+1000)
     {
       timer1 = millis();
+      if(reset_status == 1)
+      {
+        Serial.println("RESET");
+        stopWatch_time = 0;
+        lv_label_set_text_fmt(ui_Label6,"00:00:00");
+        reset_status = -1;
+      }
+      if(start_status == 1)
+      {
+        char* result = time_format(stopWatch_time);
+        Serial.println("START");
+        stopWatch_time++;
+        lv_label_set_text_fmt(ui_Label6,"%s",result);
+      }
+      else if(start_status == 0)
+      {
+        Serial.println("STOP");
+        start_status = -1;
+      }
+      Serial.println(stopWatch_time);
     }
-  
-
     lv_timer_handler(); /* let the GUI do its work */
     delay(5);
 }
